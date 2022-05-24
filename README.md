@@ -1,8 +1,6 @@
 flask-stock-portfolio -> Test driven
 
-Part 1:
-
-SETUP:
+Part1-ch1 - Setup
 
 $ python3 --version
 $ python3 -m venv venv
@@ -34,7 +32,7 @@ Turn back to you terminal after you view your site in the browser. You should se
 Structure (Exec in terminal):
 (venv) $ tree -L 2
 
-ROUTING:
+part1-ch4 - Routing
 
 Create a about() -> function (view)
 Default method=GET
@@ -79,8 +77,7 @@ secrets module to generate a key.
 Loading session data.
 Redirects /add_stock to /stocks/
 
-Pytest:
-
+part1-ch8 - Testing with Pytest:
 (venv) $ pip install pytest
 (venv)$ pip freeze > requirements.txt
 
@@ -121,7 +118,7 @@ A favicon is a very small icon that's frequently displayed in the tab of a webpa
 
 Inheritance and html code in css, and how to style the app.
 
-Flash messages:
+part1-ch9 - Flash messages:
 flash() func/method within the app.py
 
 Loggin in Flask:
@@ -129,3 +126,80 @@ Add a log message to the index() view function in app.py.
 
 Create a repository for the project:
 1 - Create the repo in github.com
+
+part2-ch12
+Blueprints: divide your Flask project into separate components.
+
+Stocks Blueprint:
+handles stock portfolio management (add, delete, edit stocks in a portfolio)
+
+Users Blueprint: 
+handles user management (registration, login/logout, password reset)
+
+Create the folder project:
+create stocks and users folders
+create a module file in each __init__.py
+
+Exec this to see the routes:
+$ flask routes
+
+part2-ch13 Configuration Variables
+FLASK_ENV - environment that the Flask app is running in (development or production)
+DEBUG - enables debug mode
+TESTING - enables testing mode
+SECRET_KEY - used for securely signing the session cookie
+
+in app.py bellow app = Flask:
+app.config.from_pyfile('flask.cfg')
+app.config.from_pyfile(os.environ['YOUR_APPLICATION_SETTINGS'])
+
+Then
+$ export YOUR_APPLICATION_SETTINGS=./config_development.py
+
+part2-ch14, Factory Method Pattern:
+Flask Application Factory
+The initialization of a Flask app requires the following steps:
+
+1 - Create the Flask application as an instance of the Flask class
+2 - Set the configuration variables
+3 - Register the blueprints in the project
+4 - Configure the logger
+
+Part2, ch13: Flask internals
+States: 
+Application Setup: app object - Handled by `create_app` function.
+Steady-State: Request / Response processing - Handle by Blueprints.
+
+Context:
+1 Application context - keeps track of the application-level data (configuration variables, logger, etc.)
+2 Request context - keeps track of the request-level data (URL, HTTP method, headers, request data, session, etc.)
+
+Part2-ch14: Pytest Fixtures
+
+The test fixture approach provides much greater flexibility than the classic Setup()/Teadown().
+First, fixtures are defined as functions (that should have a descriptive names for their purpose).
+
+In tests/conftest.py (where all fixtures should be defined), add a fixture to create the test client.
+
+To really get a sense of when the test_client() fixture is run, 
+pytest can provide a call structure of the fixtures and tests with the '--setup-show' argument:
+(venv)$ python -m pytest --setup-show tests/functional/
+
+Review context manager:
+with statement context manager. 
+
+Code/test coverage:
+pytest-cov
+
+(venv)$ pip install pytest-cov
+(venv)$ pip freeze > requirements.txt
+
+Tu run the coverage plugin:
+(venv)$ python3 -m pytest --cov=project
+=project is the Flask project structure.
+
+Part2-ch17: Error Pages
+abort()
+error handlers
+404, 405, 403 html templates
+
